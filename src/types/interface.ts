@@ -15,6 +15,7 @@ export interface IAuthContext {
     username: string;
     password: string;
   }) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 export interface IPrivateRoutes {

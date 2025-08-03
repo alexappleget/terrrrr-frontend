@@ -8,6 +8,9 @@ export const AuthContext = createContext<IAuthContext>({
   signIn: async () => {
     throw new Error("Login function must be used inside the AuthProvider");
   },
+  signOut: async () => {
+    throw new Error("Signout function must be used inside the AuthProvider");
+  },
 });
 
 export const useAuthContext = () => useContext(AuthContext);

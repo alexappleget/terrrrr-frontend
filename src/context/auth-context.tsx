@@ -13,7 +13,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Username and password are required");
     }
 
-    const response = await fetch("http://localhost:6842/api/user/signup", {
+    await fetch("http://localhost:6842/api/user/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,9 +21,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       credentials: "include",
       body: JSON.stringify({ username, password }),
     });
-
-    const data = await response.json();
-    console.log(data);
   };
 
   const signIn = async ({
@@ -37,7 +34,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Username and password are required");
     }
 
-    const response = await fetch("http://localhost:6842/api/user/login", {
+    await fetch("http://localhost:6842/api/user/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,13 +42,17 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       credentials: "include",
       body: JSON.stringify({ username, password }),
     });
+  };
 
-    const authToken = response.json();
-    console.log(authToken);
+  const signOut = async () => {
+    await fetch("http://localhost:6842/api/user/signout", {
+      method: "POST",
+      credentials: "include",
+    });
   };
 
   return (
-    <AuthContext.Provider value={{ signUp, signIn }}>
+    <AuthContext.Provider value={{ signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
