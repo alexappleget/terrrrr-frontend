@@ -1,4 +1,4 @@
-import { Button } from "@/components/button";
+import { Button } from "@/components/button/button";
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import { Label } from "@/components/label";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { Eye, EyeOff, Pickaxe } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
   const { signIn } = useAuthContext();
@@ -38,8 +38,8 @@ export const SignIn = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-[url('/login-background.png')] bg-cover">
-      <Card className="w-full max-w-md shadow-2xl bg-[url('/terraria-dirt-block.png')] bg-cover font-['Press_Start_2P']">
+    <section className="min-h-screen flex items-center justify-center bg-[url('/mountain-background.png')] bg-cover">
+      <Card className="w-full max-w-md shadow-2xl bg-[url('/terraria-dirt-block.png')] bg-cover">
         <CardHeader className="text-center pb-2">
           <div className="flex justify-center mb-4">
             <div className="p-3 bg-amber-600 rounded-full shadow-lg">
@@ -69,6 +69,7 @@ export const SignIn = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="bg-stone-800/80 border-amber-600 text-yellow-100 focus:border-amber-400 focus:ring-amber-400/50"
+                autoComplete="new-username"
                 required
               />
             </div>
@@ -84,6 +85,7 @@ export const SignIn = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-stone-800/80 border-amber-600 text-yellow-100 focus:border-amber-400 focus:ring-amber-400/50 pr-10"
+                  autoComplete="new-password"
                   required
                 />
                 <Button
@@ -125,12 +127,12 @@ export const SignIn = () => {
             <span className="text-yellow-200/60 text-xs">
               New to this world?{" "}
             </span>
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               className="text-yellow-200 hover:text-yellow-100 text-xs underline"
             >
               Create Character
-            </a>
+            </Link>
           </div>
         </CardFooter>
       </Card>

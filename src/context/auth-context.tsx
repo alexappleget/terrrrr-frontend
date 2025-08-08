@@ -1,7 +1,52 @@
 import { AuthContext } from "@/hooks/useAuthContext";
-import type { ReactNode } from "react";
+import type { IUser } from "@/types/interface";
+import { useEffect, useState, type ReactNode } from "react";
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const response = await fetch("http://localhost:6842/api/auth/session", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (data.authenticated) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (isAuthenticated) {
+        const response = await fetch(
+          "http://localhost:6842/api/user/fetchUserById",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        const { user } = await response.json();
+
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    };
+
+    fetchUserProfile();
+  }, [isAuthenticated]);
+
   const signUp = async ({
     username,
     password,
@@ -21,6 +66,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       credentials: "include",
       body: JSON.stringify({ username, password }),
     });
+
+    setIsAuthenticated(true);
   };
 
   const signIn = async ({
@@ -42,6 +89,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       credentials: "include",
       body: JSON.stringify({ username, password }),
     });
+
+    setIsAuthenticated(true);
   };
 
   const signOut = async () => {
@@ -49,10 +98,14 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       method: "POST",
       credentials: "include",
     });
+
+    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ signUp, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, signUp, signIn, signOut, user }}
+    >
       {children}
     </AuthContext.Provider>
   );

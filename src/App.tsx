@@ -1,39 +1,39 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { SignIn } from "./pages/sign-in";
 import { SignUp } from "./pages/sign-up";
-import { useEffect, useState } from "react";
 import { Dashboard } from "./pages/dashboard";
 import { PrivateRoute } from "./components/private-route";
+import { useAuthContext } from "./hooks/useAuthContext";
+import { PublicRoute } from "./components/public-route";
+import { WorldPage } from "./pages/world-page";
+import { Bosses } from "./pages/bosses";
+import { Notes } from "./pages/notes";
+import { Events } from "./pages/events";
+import { Admin } from "./pages/admin";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const response = await fetch("http://localhost:6842/api/auth/session", {
-        method: "GET",
-        credentials: "include",
-      });
-
-      const data = await response.json();
-
-      console.log(data);
-
-      if (data.authenticated) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
+  const { isAuthenticated } = useAuthContext();
 
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/signin" />} />
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
+      <Route
+        path="/signin"
+        element={
+          <PublicRoute isAuthenticated={isAuthenticated}>
+            <SignIn />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <PublicRoute isAuthenticated={isAuthenticated}>
+            <SignUp />
+          </PublicRoute>
+        }
+      />
+
       <Route
         path="/dashboard"
         element={
@@ -42,6 +42,19 @@ function App() {
           </PrivateRoute>
         }
       />
+      <Route
+        path="/world/:id"
+        element={
+          <PrivateRoute isAuthenticated={isAuthenticated}>
+            <WorldPage />
+          </PrivateRoute>
+        }
+      >
+        <Route path="bosses" element={<Bosses />} />
+        <Route path="notes" element={<Notes />} />
+        <Route path="events" element={<Events />} />
+        <Route path="admin" element={<Admin />} />
+      </Route>
     </Routes>
   );
 }
