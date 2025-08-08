@@ -21,6 +21,9 @@ export const Admin = () => {
     setWorldMembers(members);
   }, [id]);
 
+  console.log(worldCode);
+  console.log(worldMembers);
+
   useEffect(() => {
     fetchAllMemberships();
   }, [fetchAllMemberships]);
