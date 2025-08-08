@@ -9,7 +9,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const response = await fetch(`${BACKEND_URL}/api/auth/session`, {
+      const response = await fetch(`${BACKEND_URL}api/auth/session`, {
         method: "GET",
         credentials: "include",
       });
@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (isAuthenticated) {
-        const response = await fetch(`${BACKEND_URL}/api/user/fetchUserById`, {
+        const response = await fetch(`${BACKEND_URL}api/user/fetchUserById`, {
           method: "GET",
           credentials: "include",
         });
@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Username and password are required");
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/user/signup`, {
+    const response = await fetch(`${BACKEND_URL}api/user/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Username and password are required");
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/user/signin`, {
+    const response = await fetch(`${BACKEND_URL}api/user/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +102,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    const response = await fetch(`${BACKEND_URL}/api/user/signout`, {
+    const response = await fetch(`${BACKEND_URL}api/user/signout`, {
       method: "POST",
       credentials: "include",
     });

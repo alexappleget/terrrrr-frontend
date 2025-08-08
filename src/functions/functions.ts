@@ -85,7 +85,7 @@ export const getNotes = async ({ id }: { id: string }) => {
 };
 
 export const getUserWorlds = async () => {
-  const response = await fetch(`${BACKEND_URL}/api/world`, {
+  const response = await fetch(`${BACKEND_URL}api/world`, {
     method: "GET",
     credentials: "include",
   });
