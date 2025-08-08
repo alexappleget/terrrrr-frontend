@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Username and password are required");
     }
 
-    await fetch(`${BACKEND_URL}/api/user/signup`, {
+    const response = await fetch(`${BACKEND_URL}/api/user/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -64,6 +64,11 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       credentials: "include",
       body: JSON.stringify({ username, password }),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Sign up failed");
+    }
 
     setIsAuthenticated(true);
   };
@@ -79,7 +84,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Username and password are required");
     }
 
-    await fetch(`${BACKEND_URL}/api/user/signin`, {
+    const response = await fetch(`${BACKEND_URL}/api/user/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,6 +92,11 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       credentials: "include",
       body: JSON.stringify({ username, password }),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Sign up failed");
+    }
 
     setIsAuthenticated(true);
   };
