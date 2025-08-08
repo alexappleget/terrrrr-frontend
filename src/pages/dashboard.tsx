@@ -21,6 +21,10 @@ export const Dashboard = () => {
   const fetchUserWorlds = async () => {
     const response = await getUserWorlds();
 
+    if (!response) {
+      throw new Error("Failed to fetch worlds.");
+    }
+
     const { userWorldMemberships } = await response.json();
     setWorlds(userWorldMemberships);
   };
