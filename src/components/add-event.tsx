@@ -12,7 +12,7 @@ import { Input } from "./input";
 import { Label } from "./label";
 import { Textarea } from "./textarea";
 import React, { useState } from "react";
-import { BACKEND_URL } from "@/lib/utils";
+import { createEvent } from "@/functions/functions";
 
 export const AddEvent = () => {
   const { id } = useParams();
@@ -23,18 +23,11 @@ export const AddEvent = () => {
   const handleCreateEvent = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const response = await fetch(`${BACKEND_URL}/api/event/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        name,
-        description,
-        scheduledAt: new Date(scheduledAt).toISOString(),
-      }),
-    });
+    if (!id) {
+      throw new Error("World ID not found.");
+    }
+
+    const response = await createEvent({ id, name, description, scheduledAt });
 
     if (response.ok) {
       window.location.reload();
@@ -44,7 +37,9 @@ export const AddEvent = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button type="button">Create Event</Button>
+        <Button type="button" className="text-xs">
+          Create Event
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
         <DialogHeader>

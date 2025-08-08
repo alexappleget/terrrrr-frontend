@@ -8,11 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/card";
+import { getEvents } from "@/functions/functions";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { BACKEND_URL } from "@/lib/utils";
 import type { IEvent } from "@/types/interface";
-import { CalendarDays, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Users } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const Events = () => {
@@ -20,21 +21,19 @@ export const Events = () => {
   const { user } = useAuthContext();
   const [worldEvents, setWorldEvents] = useState<IEvent[]>([]);
 
-  console.log(user);
+  const fetchEvents = useCallback(async () => {
+    if (!id) {
+      throw new Error("World ID not found.");
+    }
+    const response = await getEvents({ id });
+
+    const { events } = await response.json();
+    setWorldEvents(events);
+  }, [id]);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const response = await fetch(`${BACKEND_URL}/api/event/${id}`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      const { events } = await response.json();
-      setWorldEvents(events);
-    };
-
     fetchEvents();
-  }, [id]);
+  }, [fetchEvents]);
 
   const handleJoinEvent = async ({ id }: { id: string }) => {
     const response = await fetch(`${BACKEND_URL}/api/event/join/${id}`, {
@@ -43,16 +42,29 @@ export const Events = () => {
     });
 
     if (response.ok) {
-      window.location.reload();
+      fetchEvents();
+    }
+  };
+
+  const handleLeaveEvent = async ({ id }: { id: string }) => {
+    const response = await fetch(`${BACKEND_URL}/api/event/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      fetchEvents();
     }
   };
 
   return (
     <div className="grid gap-4 px-4 md:px-16 lg:px-32 xl:px-52">
-      <div className="flex items-center justify-between gap-3 mt-12">
-        <div className="flex items-center gap-2">
-          <CalendarDays className="h-5 w-5" />
-          <span className="text-lg">Upcoming Events</span>
+      <div className="flex items-center justify-between mt-12">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-lg font-semibold">UPCOMING EVENTS</h2>
+          <p className="text-xs text-gray-400">
+            Plan and coordinate your team adventures
+          </p>
         </div>
         <AddEvent />
       </div>
@@ -71,7 +83,7 @@ export const Events = () => {
             minute: "2-digit",
           });
 
-          const isAttending = event.RSVPs.filter(
+          const isAttending = event.RSVPs.some(
             (rsvp) => rsvp.userId === user?.id
           );
 
@@ -89,7 +101,7 @@ export const Events = () => {
                 <p>{event.description}</p>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Users className="h-4 w-4" />
-                  {event.RSVPs.length} attending
+                  {event.RSVPs.length}
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-between">
@@ -105,7 +117,11 @@ export const Events = () => {
                   ))}
                 </div>
                 {isAttending ? (
-                  <Button type="button" variant="destructive">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => handleLeaveEvent({ id: event.id })}
+                  >
                     Leave
                   </Button>
                 ) : (

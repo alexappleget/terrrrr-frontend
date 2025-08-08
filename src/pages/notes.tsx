@@ -6,29 +6,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/card";
-import { BACKEND_URL } from "@/lib/utils";
+import { getNotes } from "@/functions/functions";
 import type { INote } from "@/types/interface";
 import { Notebook } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const Notes = () => {
   const { id } = useParams();
   const [worldNotes, setWorldNotes] = useState<INote[]>([]);
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      const response = await fetch(`${BACKEND_URL}/api/world/notes/${id}`, {
-        method: "GET",
-        credentials: "include",
-      });
+  const fetchNotes = useCallback(async () => {
+    if (!id) {
+      throw new Error("World ID not found.");
+    }
+    const response = await getNotes({ id });
 
-      const { notes } = await response.json();
-      setWorldNotes(notes);
-    };
-
-    fetchNotes();
+    const { notes } = await response.json();
+    setWorldNotes(notes);
   }, [id]);
+
+  useEffect(() => {
+    fetchNotes();
+  }, [fetchNotes]);
 
   return (
     <div className="flex flex-col px-4 md:px-16 lg:px-32 xl:px-52">

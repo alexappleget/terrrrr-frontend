@@ -1,27 +1,27 @@
 import { Badge } from "@/components/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/card";
-import { BACKEND_URL } from "@/lib/utils";
+import { getBosses } from "@/functions/functions";
 import type { IBoss } from "@/types/interface";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const Bosses = () => {
   const { id } = useParams();
   const [worldBosses, setWorldBosses] = useState<IBoss[]>([]);
 
-  useEffect(() => {
-    const fetchBosses = async () => {
-      const response = await fetch(`${BACKEND_URL}/api/world/bosses/${id}`, {
-        method: "GET",
-        credentials: "include",
-      });
+  const fetchBosses = useCallback(async () => {
+    if (!id) {
+      throw new Error("World ID not found.");
+    }
+    const response = await getBosses({ id });
 
-      const { bosses } = await response.json();
-      setWorldBosses(bosses);
-    };
-
-    fetchBosses();
+    const { bosses } = await response.json();
+    setWorldBosses(bosses);
   }, [id]);
+
+  useEffect(() => {
+    fetchBosses();
+  }, [fetchBosses]);
 
   return (
     <div className="flex-grow flex flex-col items-center px-4 md:px-16 lg:px-32 xl:px-52">

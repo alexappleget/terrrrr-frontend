@@ -11,23 +11,18 @@ import {
 } from "./dialog";
 import { Input } from "./input";
 import { Label } from "./label";
-import { BACKEND_URL } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { joinWorld } from "@/functions/functions";
 
 export const JoinWorld = () => {
+  const navigate = useNavigate();
   const [joinCode, setJoinCode] = useState<string>("");
 
   const handleJoinWorld = async () => {
-    const response = await fetch(`${BACKEND_URL}/api/world/joinWorld`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ code: joinCode }),
-    });
+    const response = await joinWorld({ joinCode });
 
-    const data = await response.json();
-    console.log(data);
+    const { worldId } = await response.json();
+    navigate(`/world/${worldId}/bosses`);
   };
 
   return (

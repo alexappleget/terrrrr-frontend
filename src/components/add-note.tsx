@@ -12,7 +12,7 @@ import { Label } from "./label";
 import { Textarea } from "./textarea";
 import { Input } from "./input";
 import { useParams } from "react-router-dom";
-import { BACKEND_URL } from "@/lib/utils";
+import { createNote } from "@/functions/functions";
 
 export const AddNote = () => {
   const { id } = useParams();
@@ -22,14 +22,11 @@ export const AddNote = () => {
   const handleCreateNote = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const response = await fetch(`${BACKEND_URL}/api/world/notes/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ title, content }),
-    });
+    if (!id) {
+      throw new Error("World ID not found.");
+    }
+
+    const response = await createNote({ id, title, content });
 
     if (response.ok) {
       window.location.reload();

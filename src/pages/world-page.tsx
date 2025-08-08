@@ -1,7 +1,7 @@
-import { BACKEND_URL } from "@/lib/utils";
+import { getWorldMembership } from "@/functions/functions";
 import type { IUserWorlds } from "@/types/interface";
-import { ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowLeft, Calendar, Notebook, Settings, Skull } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 
 export const WorldPage = () => {
@@ -9,21 +9,34 @@ export const WorldPage = () => {
   const [world, setWorld] = useState<IUserWorlds>();
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    const fetchWorld = async () => {
-      const response = await fetch(`${BACKEND_URL}/api/world/${id}`, {
-        method: "GET",
-        credentials: "include",
-      });
+  const fetchWorld = useCallback(async () => {
+    if (!id) {
+      throw new Error("World ID not found.");
+    }
 
-      const { membership } = await response.json();
-      setWorld(membership);
-    };
+    const response = await getWorldMembership({ id });
 
-    fetchWorld();
+    const { membership } = await response.json();
+    setWorld(membership);
   }, [id]);
 
+  useEffect(() => {
+    fetchWorld();
+  }, [fetchWorld]);
+
   const isActiveTab = (tab: string) => pathname.endsWith(`/${tab}`);
+
+  const tabs = [
+    { key: "bosses", label: "Bosses", icon: Skull, visible: true },
+    { key: "notes", label: "Notes", icon: Notebook, visible: true },
+    { key: "events", label: "Events", icon: Calendar, visible: true },
+    {
+      key: "admin",
+      label: "Admin",
+      icon: Settings,
+      visible: world && ["OWNER", "ADMIN", "SUB_ADMIN"].includes(world.role),
+    },
+  ];
 
   return (
     <section className="flex flex-col min-h-screen">
@@ -38,21 +51,19 @@ export const WorldPage = () => {
         <h2>{world?.world.name}</h2>
       </nav>
       <div className="flex flex-wrap justify-center mt-10 gap-2 px-4 sm:gap-4">
-        {["bosses", "notes", "events"]
-          .concat(
-            world && ["OWNER", "ADMIN", "SUB_ADMIN"].includes(world.role)
-              ? ["admin"]
-              : []
-          )
-          .map((tab) => (
+        {tabs
+          .filter((tab) => tab.visible)
+          .map(({ key, label, icon: Icon }) => (
             <Link
-              key={tab}
-              to={tab}
-              className={`border-2 py-2 px-6 sm:px-12 text-xs sm:text-sm ${
-                isActiveTab(tab) ? "bg-black text-white" : "hover:bg-gray-200"
+              key={key}
+              to={key}
+              className={`border-2 py-2 px-6 sm:px-12 text-xs sm:text-sm flex items-center gap-2 ${
+                isActiveTab(key) ? "bg-black text-white" : "hover:bg-[#FAF9F6]"
               }`}
+              aria-current={isActiveTab(key) ? "page" : undefined}
             >
-              {tab.toUpperCase()}
+              {Icon && <Icon className="w-5 h-5" />}
+              {label.toUpperCase()}
             </Link>
           ))}
       </div>

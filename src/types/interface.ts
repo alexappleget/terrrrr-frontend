@@ -40,10 +40,10 @@ export interface IEvent {
   scheduledAt: string;
   worldId: string;
   createdById: string;
-  RSVPs: EventRSVP[];
+  RSVPs: IEventRSVP[];
 }
 
-export interface EventRSVP {
+export interface IEventRSVP {
   id: string;
   userId: string;
   eventId: string;

@@ -1,6 +1,6 @@
-import { BACKEND_URL } from "@/lib/utils";
+import { getAllMemberships } from "@/functions/functions";
 import type { IWorldCode, IWorldMembers } from "@/types/interface";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const Admin = () => {
@@ -8,24 +8,26 @@ export const Admin = () => {
   const [worldCode, setWorldCode] = useState<IWorldCode | null>(null);
   const [worldMembers, setWorldMembers] = useState<IWorldMembers[]>([]);
 
-  useEffect(() => {
-    const fetchAllMemberships = async () => {
-      const response = await fetch(
-        `${BACKEND_URL}/api/world/allMemberships/${id}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+  const fetchAllMemberships = useCallback(async () => {
+    if (!id) {
+      throw new Error("World ID not found.");
+    }
 
-      const { code, members } = await response.json();
+    const response = await getAllMemberships({ id });
 
-      setWorldCode(code);
-      setWorldMembers(members);
-    };
+    const { code, members } = await response.json();
 
-    fetchAllMemberships();
+    setWorldCode(code);
+    setWorldMembers(members);
   }, [id]);
 
-  return <></>;
+  useEffect(() => {
+    fetchAllMemberships();
+  }, [fetchAllMemberships]);
+
+  return (
+    <div className="border-2 px-4 md:px-16 lg:px-32 xl:px-52">
+      <h2>Admin</h2>
+    </div>
+  );
 };
