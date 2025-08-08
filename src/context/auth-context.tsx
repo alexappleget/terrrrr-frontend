@@ -1,4 +1,5 @@
 import { AuthContext } from "@/hooks/useAuthContext";
+import { BACKEND_URL } from "@/lib/utils";
 import type { IUser } from "@/types/interface";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -8,7 +9,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const response = await fetch("http://localhost:6842/api/auth/session", {
+      const response = await fetch(`${BACKEND_URL}/api/auth/session`, {
         method: "GET",
         credentials: "include",
       });
@@ -28,13 +29,10 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (isAuthenticated) {
-        const response = await fetch(
-          "http://localhost:6842/api/user/fetchUserById",
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${BACKEND_URL}/api/user/fetchUserById`, {
+          method: "GET",
+          credentials: "include",
+        });
 
         const { user } = await response.json();
 
@@ -58,7 +56,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Username and password are required");
     }
 
-    await fetch("http://localhost:6842/api/user/signup", {
+    await fetch(`${BACKEND_URL}/api/user/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +79,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Username and password are required");
     }
 
-    await fetch("http://localhost:6842/api/user/signin", {
+    await fetch(`${BACKEND_URL}/api/user/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +92,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    await fetch("http://localhost:6842/api/user/signout", {
+    await fetch(`${BACKEND_URL}/api/user/signout`, {
       method: "POST",
       credentials: "include",
     });
