@@ -102,10 +102,15 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    await fetch(`${BACKEND_URL}/api/user/signout`, {
+    const response = await fetch(`${BACKEND_URL}/api/user/signout`, {
       method: "POST",
       credentials: "include",
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Sign up failed");
+    }
 
     setIsAuthenticated(false);
   };
