@@ -34,12 +34,10 @@ export const Dashboard = () => {
   }, []);
 
   return (
-    <section className="flex flex-col min-h-screen bg-[#A8D5BA] text-[#2E4630]">
+    <section className="flex flex-col min-h-screen">
       <Navbar handleSignOut={handleSignOut} />
-      <div className="border-2 border-[#D4AF37] flex-grow flex flex-col items-center px-4 md:px-16 lg:px-32 xl:px-52">
-        <h2 className="text-3xl mt-12 mx-auto mb-12 text-[#2E8B57]">
-          YOUR WORLDS
-        </h2>
+      <div className="flex-grow flex flex-col items-center px-4 md:px-16 lg:px-32 xl:px-52 bg-gradient-to-b from-[#7A5230] to-[#5B3920]">
+        <h2 className="text-3xl mt-12 mb-12 text-[#EAD7B7]">YOUR WORLDS</h2>
         <div className="flex gap-10">
           <CreateWorld />
           <JoinWorld />
@@ -52,6 +50,7 @@ export const Dashboard = () => {
               name={world.world.name}
               description={world.world.description}
               role={world.role}
+              members={world.world._count.memberships}
             />
           ))}
         </div>

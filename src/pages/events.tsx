@@ -60,15 +60,15 @@ export const Events = () => {
   return (
     <div className="grid gap-4 px-4 md:px-16 lg:px-32 xl:px-52">
       <div className="flex items-center justify-between mt-12">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 text-purple-700">
           <h2 className="text-lg font-semibold">UPCOMING EVENTS</h2>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-purple-600">
             Plan and coordinate your team adventures
           </p>
         </div>
         <AddEvent />
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 my-4">
+      <div className="grid gap-4 lg:grid-cols-2 my-4">
         {worldEvents.map((event) => {
           const date = new Date(event.scheduledAt);
 
@@ -88,29 +88,32 @@ export const Events = () => {
           );
 
           return (
-            <Card key={event.id}>
+            <Card
+              key={event.id}
+              className="border-2 bg-gradient-to-br from-[#472d67] via-[#3d2759] to-[#2b193d] text-purple-200 hover:shadow-lg hover:shadow-purple-600/70"
+            >
               <CardHeader>
                 <CardTitle className="text-lg">
                   {event.name.toUpperCase()}
                 </CardTitle>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-purple-400">
                   {datePart}, {timePart}
                 </div>
               </CardHeader>
               <CardContent className="grid gap-2">
                 <p>{event.description}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 text-xs text-green-400">
                   <Users className="h-4 w-4" />
                   {event.RSVPs.length}
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-between">
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-2">
                   {event.RSVPs.map((attendee) => (
                     <Badge
                       key={attendee.id}
                       variant="secondary"
-                      className="border-black"
+                      className="bg-purple-700 text-purple-50 shadow-lg shadow-purple-600/50 border border-purple-600"
                     >
                       {attendee.user.username}
                     </Badge>
