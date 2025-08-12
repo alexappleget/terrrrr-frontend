@@ -21,23 +21,23 @@ export const WorldCard = ({
     switch (roleStyle) {
       case "owner":
         return {
-          text: "text-yellow-400 group-hover:text-yellow-300",
+          text: "text-yellow-400",
           bg: "bg-yellow-900/40 border border-yellow-500/30",
         };
       case "admin":
         return {
-          text: "text-gray-300 group-hover:text-gray-200",
+          text: "text-gray-300",
           bg: "bg-gray-700/40 border border-gray-400/30",
         };
       case "sub_admin":
         return {
-          text: "text-amber-600 group-hover:text-amber-500",
+          text: "text-amber-600",
           bg: "bg-amber-900/40 border border-amber-600/30",
         };
       case "member":
       default:
         return {
-          text: "text-purple-300 group-hover:text-purple-200",
+          text: "text-purple-300",
           bg: "bg-purple-900/40 border border-purple-500/30",
         };
     }

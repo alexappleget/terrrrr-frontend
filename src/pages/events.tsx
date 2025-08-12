@@ -124,7 +124,6 @@ export const Events = () => {
                     type="button"
                     variant="destructive"
                     onClick={() => handleLeaveEvent({ id: event.id })}
-                    className="hover:cursor-pointer"
                   >
                     Leave
                   </Button>
@@ -132,7 +131,6 @@ export const Events = () => {
                   <Button
                     type="button"
                     onClick={() => handleJoinEvent({ id: event.id })}
-                    className="hover:cursor-pointer"
                   >
                     Join
                   </Button>
