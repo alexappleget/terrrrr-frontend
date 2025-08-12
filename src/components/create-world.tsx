@@ -32,21 +32,21 @@ export const CreateWorld = () => {
       <DialogTrigger asChild>
         <Button
           type="button"
-          className="bg-[#7A5230] border-2 border-[#7A5230] text-[#D9E6B9] hover:bg-[#3FA34D] hover:text-[#1E3A2F]"
+          className="bg-[#4CAF50] text-[#F0F8E8] border-2 border-[#2e5a1f] hover:bg-[#66BB66] hover:text-[#1E3A2F] shadow-md shadow-[#2e5a1f] px-4 py-2"
         >
           Create World
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-[#1E3A2F] border-2 border-[#7A5230] text-white">
+      <DialogContent className="sm:max-w-[425px] border-4 border-[#4A2C19] bg-gradient-to-b from-[#5A3E1B] to-[#7B5E25] text-[#F0E6D2]">
         <DialogHeader>
-          <DialogTitle className="text-[#A8D18D]">Create New World</DialogTitle>
-          <DialogDescription className="text-[#D9E6B9]">
+          <DialogTitle>Create New World</DialogTitle>
+          <DialogDescription className="text-[#CBB993] text-xs my-2">
             Set up a new world for your team to conquer together
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4">
           <div className="grid gap-3">
-            <Label htmlFor="world-name" className="text-[#A8D18D]">
+            <Label htmlFor="world-name" className="text-[#E9D99B]">
               World Name
             </Label>
             <Input
@@ -54,11 +54,15 @@ export const CreateWorld = () => {
               name="worldName"
               value={worldName}
               onChange={(e) => setWorldName(e.target.value)}
-              className="border-2 border-[#3FA34D] bg-[#E3D9B0] text-[#1E3A2F]"
+              className="border-2 border-[#4A2C19] bg-[#7B5E25] text-[#F0E6D2]
+                placeholder-[#CBB993]
+                focus:outline-none focus:ring-2 focus:ring-[#D6B77B]
+                rounded-sm
+                px-2 py-1"
             />
           </div>
           <div className="grid gap-3">
-            <Label htmlFor="description" className="text-[#A8D18D]">
+            <Label htmlFor="description" className="text-[#E9D99B]">
               Description
             </Label>
             <Textarea
@@ -66,7 +70,11 @@ export const CreateWorld = () => {
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="border-2 border-[#3FA34D] bg-[#E3D9B0] text-[#1E3A2F]"
+              className="border-2 border-[#4A2C19] bg-[#7B5E25] text-[#F0E6D2]
+                placeholder-[#CBB993]
+                focus:outline-none focus:ring-2 focus:ring-[#D6B77B]
+                rounded-sm
+                px-2 py-1"
             />
           </div>
         </div>
@@ -74,7 +82,7 @@ export const CreateWorld = () => {
           <Button
             type="submit"
             onClick={handleCreateWorld}
-            className="bg-[#7A5230] border-2 border-[#7A5230] text-[#D9E6B9] hover:bg-[#3FA34D] hover:text-[#1E3A2F]"
+            className="bg-[#4CAF50] text-[#F0F8E8] border-2 border-[#2e5a1f] hover:bg-[#66BB66] hover:text-[#1E3A2F] shadow-md shadow-[#2e5a1f] px-4 py-2"
           >
             Create World
           </Button>

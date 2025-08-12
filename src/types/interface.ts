@@ -84,6 +84,9 @@ export interface IUserWorlds {
     name: string;
     description: string;
     createdAt: string;
+    _count: {
+      memberships: number;
+    };
   };
 }
 
@@ -92,6 +95,7 @@ export interface IWorldCardProps {
   name: string;
   description: string;
   role: string;
+  members: number;
 }
 
 export interface IWorldCode {

@@ -8,30 +8,30 @@ export const Navbar = ({ handleSignOut }: { handleSignOut: () => void }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="border-b-2 border-[#7A5230] bg-[#1E3A2F] h-20 px-4 md:px-16 lg:px-32 xl:px-52 flex items-center justify-between text-[#D9E6B9]">
+    <nav className="h-20 px-4 md:px-16 lg:px-32 xl:px-52 flex items-center justify-between text-white bg-gradient-to-b from-[#4caf50] to-[#3e8e41] border-b-4 border-[#2e5a1f]">
       {/* Logo */}
       <Link to="/dashboard" className="flex items-center gap-2">
-        <Sword className="h-10 w-10 p-1 rounded-lg bg-[#7A5230] text-[#D9E6B9]" />
-        <span className="text-lg font-semibold">Terrrrr</span>
+        <Sword className="h-10 w-10 p-1 rounded-lg bg-[#2e5a1f] text-[#c2ff9e]" />
+        <span>Terrrrr</span>
       </Link>
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex items-center gap-4 text-sm">
+      <div className="hidden md:flex items-center gap-4">
         <CustomLink
           href="/profile"
-          className="bg-transparent text-[#D9E6B9] border-2 border-[#7A5230] hover:bg-[#3FA34D] hover:text-[#1E3A2F]"
+          className="bg-[#c2ff9e] text-[#2e5a1f] border-2 border-[#2e5a1f] hover:bg-[#2e5a1f] hover:text-[#c2ff9e]"
         >
           Profile
         </CustomLink>
         <CustomLink
           href="/settings"
-          className="bg-transparent text-[#D9E6B9] border-2 border-[#7A5230] hover:bg-[#3FA34D] hover:text-[#1E3A2F]"
+          className="bg-[#c2ff9e] text-[#2e5a1f] border-2 border-[#2e5a1f] hover:bg-[#2e5a1f] hover:text-[#c2ff9e]"
         >
           Settings
         </CustomLink>
         <Button
           type="button"
-          className="border-2 border-[#7A5230] bg-[#7A5230] text-[#D9E6B9] hover:bg-[#3FA34D] hover:border-[#3FA34D] hover:text-[#1E3A2F] hover:cursor-pointer"
+          className="border-2 border-[#2e5a1f] bg-[#2e5a1f] text-[#c2ff9e] hover:bg-[#c2ff9e] hover:border-[#2e5a1f] hover:text-[#1E3A2F] hover:cursor-pointer"
           onClick={handleSignOut}
         >
           Sign Out
@@ -52,22 +52,22 @@ export const Navbar = ({ handleSignOut }: { handleSignOut: () => void }) => {
 
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className="absolute top-20 left-0 w-full bg-[#1E3A2F] border-b-2 border-[#7A5230] flex flex-col items-center gap-4 py-4 shadow-md md:hidden z-50 text-[#D9E6B9]">
+        <div className="absolute top-20 left-0 w-full flex flex-col items-center gap-4 py-4 shadow-md md:hidden z-50 bg-gradient-to-b from-[#4caf50] to-[#3e8e41] border-b-4 border-[#2e5a1f]">
           <CustomLink
             href="/profile"
-            className="w-1/2 bg-transparent text-[#D9E6B9] border-2 border-[#7A5230] hover:bg-[#3FA34D] hover:text-[#1E3A2F]"
+            className="w-1/2 bg-[#c2ff9e] text-[#2e5a1f] border-2 border-[#2e5a1f] hover:bg-[#2e5a1f] hover:text-[#c2ff9e]"
           >
             Profile
           </CustomLink>
           <CustomLink
             href="/settings"
-            className="w-1/2 bg-transparent text-[#D9E6B9] border-2 border-[#7A5230] hover:bg-[#3FA34D] hover:text-[#1E3A2F]"
+            className="w-1/2 bg-[#c2ff9e] text-[#2e5a1f] border-2 border-[#2e5a1f] hover:bg-[#2e5a1f] hover:text-[#c2ff9e]"
           >
             Settings
           </CustomLink>
           <Button
             type="button"
-            className="border-2 w-1/2 border-[#7A5230] bg-[#7A5230] text-[#D9E6B9] hover:bg-[#3FA34D] hover:border-[#3FA34D] hover:text-[#1E3A2F] hover:cursor-pointer"
+            className="border-2 w-1/2 border-[#2e5a1f] bg-[#2e5a1f] text-[#c2ff9e] hover:bg-[#c2ff9e] hover:border-[#2e5a1f] hover:text-[#1E3A2F] hover:cursor-pointer"
             onClick={handleSignOut}
           >
             Sign Out

@@ -3,7 +3,7 @@
 @import "@fontsource/press-start-2p";
 
 body {
-  font-family: "Press_Start_2P", monospace;
+  font-family: "Press Start 2P";
 }
 
 @custom-variant dark (&:is(.dark *));
