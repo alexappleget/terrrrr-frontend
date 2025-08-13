@@ -1,17 +1,27 @@
+import { Badge } from "@/components/badge";
 import { Button } from "@/components/button/button";
 import { Card, CardContent, CardFooter } from "@/components/card";
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "@/components/command";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/popover";
+import { ScrollArea } from "@/components/scroll-area";
 import { Textarea } from "@/components/textarea";
-import { getAdminData } from "@/functions/functions";
+import { getAdminData, updateMemberRole } from "@/functions/functions";
 import type { IAdminData } from "@/types/interface";
-import { Pickaxe } from "lucide-react";
+import { ChevronsUpDown, Pickaxe } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const Admin = () => {
   const { id } = useParams();
   const [data, setData] = useState<IAdminData | null>(null);
+  const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
 
   const fetchAdminData = useCallback(async () => {
     if (!id) {
@@ -39,7 +49,42 @@ export const Admin = () => {
     );
   }
 
-  console.log(data);
+  const roles = [
+    {
+      value: "OWNER",
+      label: "Owner",
+    },
+    {
+      value: "ADMIN",
+      label: "Admin",
+    },
+    {
+      value: "SUB_ADMIN",
+      label: "Sub-Admin",
+    },
+    {
+      value: "MEMBER",
+      label: "Member",
+    },
+  ];
+
+  const handleRoleChange = async ({
+    id,
+    role,
+    userId,
+  }: {
+    id: string;
+    role: string;
+    userId: string;
+  }) => {
+    await updateMemberRole({
+      id,
+      role,
+      userId,
+    });
+    setOpenPopoverId(null);
+    fetchAdminData();
+  };
 
   return (
     <div className="flex-grow flex flex-col items-center px-4 md:px-16 lg:px-32 xl:px-52">
@@ -47,7 +92,69 @@ export const Admin = () => {
         Admin Settings
       </h2>
       <div className="mt-4 w-full flex-grow grid lg:grid-cols-2">
-        <div className="border-2 border-black">box 1</div>
+        <div className="border-2 border-black">
+          <Card>
+            <CardContent>
+              <h3 className="text-lg">Member Management</h3>
+              <ScrollArea className="h-60 py-2">
+                <div className="space-y-4">
+                  {data.memberships.map((member) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between border-2 rounded-lg px-2 py-2"
+                    >
+                      <span className="text-sm">{member.user.username}</span>
+                      <div className="space-x-2">
+                        <Badge>{member.role}</Badge>
+                        <Popover
+                          open={openPopoverId === member.id}
+                          onOpenChange={(isOpen) =>
+                            setOpenPopoverId(isOpen ? member.id : null)
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={openPopoverId === member.id}
+                              className="text-xs"
+                            >
+                              Change...
+                              <ChevronsUpDown />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <Command>
+                              <CommandList>
+                                <CommandGroup>
+                                  {roles.map((role) => (
+                                    <CommandItem
+                                      key={role.value}
+                                      value={role.value}
+                                      onSelect={() =>
+                                        handleRoleChange({
+                                          id: member.worldId,
+                                          role: role.value,
+                                          userId: member.userId,
+                                        })
+                                      }
+                                    >
+                                      {role.label}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
         <div className="space-y-4">
           <Card>
             <CardContent>

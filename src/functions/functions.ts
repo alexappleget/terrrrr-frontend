@@ -133,3 +133,24 @@ export const joinWorld = async ({ joinCode }: { joinCode: string }) => {
 
   return response;
 };
+
+export const updateMemberRole = async ({
+  id,
+  role,
+  userId,
+}: {
+  id: string;
+  role: string;
+  userId: string;
+}) => {
+  const response = await fetch(`${BACKEND_URL}/api/membership/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ role, userId }),
+  });
+
+  return response;
+};
