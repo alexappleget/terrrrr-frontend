@@ -17,13 +17,15 @@ import {
   updateMemberRole,
   updateWorldDetails,
 } from "@/functions/functions";
-import type { IAdminData, IMembership } from "@/types/interface";
+import type { IAdminData, IMembership, IUserWorlds } from "@/types/interface";
 import { ChevronsUpDown, Pickaxe } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 
 export const Admin = () => {
   const { id } = useParams();
+  const world = useOutletContext<IUserWorlds | undefined>();
+  const userRole = world?.role ?? "";
   const [data, setData] = useState<IAdminData | null>(null);
   const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
   const [worldDetails, setWorldDetails] = useState({
@@ -31,13 +33,15 @@ export const Admin = () => {
     joinCode: "",
     worldDescription: "",
   });
+  const [success, setSuccess] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const fetchAdminData = useCallback(async () => {
     if (!id) {
       throw new Error("World ID not found.");
     }
 
-    const response = await getAdminData({ id });
+    const response = await getAdminData({ id, userRole });
 
     const { adminData } = await response.json();
 
@@ -49,7 +53,7 @@ export const Admin = () => {
     );
 
     setData(adminData);
-  }, [id]);
+  }, [id, userRole]);
 
   useEffect(() => {
     fetchAdminData();
@@ -65,19 +69,31 @@ export const Admin = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(""), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
   const handleWorldUpdate = async () => {
     if (!id) {
       throw new Error("World ID not found");
     }
 
-    await updateWorldDetails({
+    const response = await updateWorldDetails({
       id,
       name: worldDetails.worldName,
       description: worldDetails.worldDescription,
       code: worldDetails.joinCode,
+      userRole,
     });
 
-    fetchAdminData();
+    if (response.ok) {
+      setSuccess("World details updated successfully");
+    } else {
+      setError("Update failed. Please try again with a different value.");
+    }
   };
 
   if (!data) {
@@ -123,6 +139,7 @@ export const Admin = () => {
       id,
       role,
       userId,
+      userRole,
     });
     setOpenPopoverId(null);
     fetchAdminData();
@@ -265,7 +282,7 @@ export const Admin = () => {
                 />
               </div>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex flex-col items-start">
               <Button
                 type="button"
                 className="bg-yellow-700 text-yellow-100 border-yellow-400 shadow hover:bg-yellow-600 hover:text-yellow-50"
@@ -273,6 +290,12 @@ export const Admin = () => {
               >
                 Save Changes
               </Button>
+              {success && (
+                <span className="text-xs text-green-400 mt-4">{success}</span>
+              )}
+              {error && (
+                <span className="text-xs text-red-400 mt-4">{error}</span>
+              )}
             </CardFooter>
           </Card>
         </div>

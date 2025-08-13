@@ -1,10 +1,21 @@
 import { BACKEND_URL } from "@/lib/utils";
 
-export const getAdminData = async ({ id }: { id: string }) => {
-  const response = await fetch(`${BACKEND_URL}/api/world/adminData/${id}`, {
-    method: "GET",
-    credentials: "include",
-  });
+export const getAdminData = async ({
+  id,
+  userRole,
+}: {
+  id: string;
+  userRole: string;
+}) => {
+  const response = await fetch(
+    `${BACKEND_URL}/api/world/adminData/${id}?userRole=${encodeURIComponent(
+      userRole
+    )}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
 
   return response;
 };
@@ -138,10 +149,12 @@ export const updateMemberRole = async ({
   id,
   role,
   userId,
+  userRole,
 }: {
   id: string;
   role: string;
   userId: string;
+  userRole: string;
 }) => {
   const response = await fetch(`${BACKEND_URL}/api/membership/${id}`, {
     method: "PATCH",
@@ -149,7 +162,7 @@ export const updateMemberRole = async ({
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify({ role, userId }),
+    body: JSON.stringify({ role, userId, userRole }),
   });
 
   return response;
@@ -160,11 +173,13 @@ export const updateWorldDetails = async ({
   name,
   description,
   code,
+  userRole,
 }: {
   id: string;
   name: string;
   description: string;
   code: string;
+  userRole: string;
 }) => {
   const response = await fetch(`${BACKEND_URL}/api/world/${id}`, {
     method: "PATCH",
@@ -172,7 +187,7 @@ export const updateWorldDetails = async ({
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify({ name, description, code }),
+    body: JSON.stringify({ name, description, code, userRole }),
   });
 
   return response;
