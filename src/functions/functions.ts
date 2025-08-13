@@ -154,3 +154,26 @@ export const updateMemberRole = async ({
 
   return response;
 };
+
+export const updateWorldDetails = async ({
+  id,
+  name,
+  description,
+  code,
+}: {
+  id: string;
+  name: string;
+  description: string;
+  code: string;
+}) => {
+  const response = await fetch(`${BACKEND_URL}/api/world/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ name, description, code }),
+  });
+
+  return response;
+};

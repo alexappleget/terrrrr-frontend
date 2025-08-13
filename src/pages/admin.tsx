@@ -12,16 +12,25 @@ import { Label } from "@/components/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/popover";
 import { ScrollArea } from "@/components/scroll-area";
 import { Textarea } from "@/components/textarea";
-import { getAdminData, updateMemberRole } from "@/functions/functions";
+import {
+  getAdminData,
+  updateMemberRole,
+  updateWorldDetails,
+} from "@/functions/functions";
 import type { IAdminData, IMembership } from "@/types/interface";
 import { ChevronsUpDown, Pickaxe } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const Admin = () => {
   const { id } = useParams();
   const [data, setData] = useState<IAdminData | null>(null);
   const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
+  const [worldDetails, setWorldDetails] = useState({
+    worldName: "",
+    joinCode: "",
+    worldDescription: "",
+  });
 
   const fetchAdminData = useCallback(async () => {
     if (!id) {
@@ -45,6 +54,31 @@ export const Admin = () => {
   useEffect(() => {
     fetchAdminData();
   }, [fetchAdminData]);
+
+  useEffect(() => {
+    if (data) {
+      setWorldDetails({
+        worldName: data.name || "",
+        joinCode: data.joinCode.code || "",
+        worldDescription: data.description || "",
+      });
+    }
+  }, [data]);
+
+  const handleWorldUpdate = async () => {
+    if (!id) {
+      throw new Error("World ID not found");
+    }
+
+    await updateWorldDetails({
+      id,
+      name: worldDetails.worldName,
+      description: worldDetails.worldDescription,
+      code: worldDetails.joinCode,
+    });
+
+    fetchAdminData();
+  };
 
   if (!data) {
     return (
@@ -94,6 +128,15 @@ export const Admin = () => {
     fetchAdminData();
   };
 
+  const handleInputChange = async (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setWorldDetails({
+      ...worldDetails,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   return (
     <div className="flex-grow flex flex-col items-center px-4 md:px-16 lg:px-32 xl:px-52">
       <h2 className="text-3xl mt-12 text-purple-700 drop-shadow-lg">
@@ -101,19 +144,35 @@ export const Admin = () => {
       </h2>
       <div className="mt-4 w-full flex-grow grid lg:grid-cols-2">
         <div className="p-2">
-          <Card>
+          <Card className="bg-gradient-to-br from-[#472d67] via-[#3d2759] to-[#2b193d] border-2 border-purple-700/60 shadow-lg shadow-purple-900/20">
             <CardContent>
-              <h3 className="text-lg">Member Management</h3>
+              <h3 className="text-lg text-purple-100 mb-2">
+                Member Management
+              </h3>
               <ScrollArea className="h-72 py-2">
                 <div className="space-y-4">
                   {data.memberships.map((member) => (
                     <div
                       key={member.id}
-                      className="flex items-center justify-between border-2 rounded-lg px-2 py-2"
+                      className="flex items-center justify-between border-2 border-purple-700/40 rounded-lg px-3 py-2 bg-purple-200/30"
                     >
-                      <span className="text-sm">{member.user.username}</span>
+                      <span className="text-sm text-purple-100">
+                        {member.user.username}
+                      </span>
                       <div className="space-x-2">
-                        <Badge>{member.role}</Badge>
+                        <Badge
+                          className={`px-2 py-1 ${
+                            member.role === "OWNER"
+                              ? "bg-yellow-700 text-yellow-100 border-yellow-400"
+                              : member.role === "ADMIN"
+                              ? "bg-blue-700 text-blue-100 border-blue-400"
+                              : member.role === "SUB_ADMIN"
+                              ? "bg-green-700 text-green-100 border-green-400"
+                              : "bg-purple-700 text-purple-100 border-purple-400"
+                          }`}
+                        >
+                          {member.role}
+                        </Badge>
                         <Popover
                           open={openPopoverId === member.id}
                           onOpenChange={(isOpen) =>
@@ -164,47 +223,56 @@ export const Admin = () => {
           </Card>
         </div>
         <div className="space-y-4 p-2">
-          <Card>
+          <Card className="bg-gradient-to-br from-[#472d67] via-[#3d2759] to-[#2b193d] border-2 border-purple-700/60 shadow-lg shadow-purple-900/20">
             <CardContent>
-              <h3 className="text-lg">World Details</h3>
+              <h3 className="text-lg text-purple-100">World Details</h3>
               <div className="grid lg:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <Label htmlFor="worldName" className="mt-4">
+                  <Label htmlFor="worldName" className="mt-4 text-purple-200">
                     Name
                   </Label>
                   <Input
                     id="worldName"
-                    type="text"
-                    value={data.name}
                     name="worldName"
-                    className="bg-purple-800/20 border-2 border-purple-700"
+                    type="text"
+                    value={worldDetails.worldName}
+                    onChange={handleInputChange}
+                    className="bg-purple-900/40 border-2 border-purple-700 text-purple-100 focus:border-yellow-400 focus:ring-yellow-400"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="joinCode" className="mt-4">
+                  <Label htmlFor="joinCode" className="mt-4 text-purple-200">
                     Join Code
                   </Label>
                   <Input
                     id="joinCode"
-                    type="text"
-                    value={data.joinCode.code}
                     name="joinCode"
-                    className="bg-purple-800/20 border-2 border-purple-700"
+                    type="text"
+                    value={worldDetails.joinCode}
+                    onChange={handleInputChange}
+                    className="bg-purple-900/40 border-2 border-purple-700 text-purple-100 focus:border-yellow-400 focus:ring-yellow-400"
                   />
                 </div>
               </div>
               <div className="space-y-2 mt-4">
-                <Label>World Description</Label>
+                <Label className="text-purple-200">World Description</Label>
                 <Textarea
                   id="worldDescription"
-                  value={data.description}
                   name="worldDescription"
-                  className="bg-purple-800/20 border-2 border-purple-700"
+                  value={worldDetails.worldDescription}
+                  onChange={handleInputChange}
+                  className="bg-purple-900/40 border-2 border-purple-700 text-purple-100 focus:border-yellow-400 focus:ring-yellow-400"
                 />
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="button">Save Changes</Button>
+              <Button
+                type="button"
+                className="bg-yellow-700 text-yellow-100 border-yellow-400 shadow hover:bg-yellow-600 hover:text-yellow-50"
+                onClick={handleWorldUpdate}
+              >
+                Save Changes
+              </Button>
             </CardFooter>
           </Card>
         </div>
