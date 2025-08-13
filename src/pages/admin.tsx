@@ -13,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/popover";
 import { ScrollArea } from "@/components/scroll-area";
 import { Textarea } from "@/components/textarea";
 import { getAdminData, updateMemberRole } from "@/functions/functions";
-import type { IAdminData } from "@/types/interface";
+import type { IAdminData, IMembership } from "@/types/interface";
 import { ChevronsUpDown, Pickaxe } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -31,6 +31,14 @@ export const Admin = () => {
     const response = await getAdminData({ id });
 
     const { adminData } = await response.json();
+
+    adminData.memberships = adminData.memberships.sort(
+      (a: IMembership, b: IMembership) =>
+        a.user.username.localeCompare(b.user.username, undefined, {
+          sensitivity: "base",
+        })
+    );
+
     setData(adminData);
   }, [id]);
 
@@ -92,11 +100,11 @@ export const Admin = () => {
         Admin Settings
       </h2>
       <div className="mt-4 w-full flex-grow grid lg:grid-cols-2">
-        <div className="border-2 border-black">
+        <div className="p-2">
           <Card>
             <CardContent>
               <h3 className="text-lg">Member Management</h3>
-              <ScrollArea className="h-60 py-2">
+              <ScrollArea className="h-72 py-2">
                 <div className="space-y-4">
                   {data.memberships.map((member) => (
                     <div
@@ -155,7 +163,7 @@ export const Admin = () => {
             </CardContent>
           </Card>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-4 p-2">
           <Card>
             <CardContent>
               <h3 className="text-lg">World Details</h3>
@@ -199,7 +207,6 @@ export const Admin = () => {
               <Button type="button">Save Changes</Button>
             </CardFooter>
           </Card>
-          <div className="border-2 border-black">box 3</div>
         </div>
       </div>
     </div>

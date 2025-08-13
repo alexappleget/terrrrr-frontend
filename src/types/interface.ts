@@ -122,3 +122,9 @@ export interface IWorldCardProps {
   role: string;
   members: number;
 }
+
+export interface IMembership {
+  user: {
+    username: string;
+  };
+}
