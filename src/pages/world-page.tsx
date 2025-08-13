@@ -72,7 +72,7 @@ export const WorldPage = () => {
           ))}
       </div>
 
-      <Outlet />
+      <Outlet context={world} />
     </section>
   );
 };

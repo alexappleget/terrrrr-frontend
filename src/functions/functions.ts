@@ -1,10 +1,21 @@
 import { BACKEND_URL } from "@/lib/utils";
 
-export const getAllMemberships = async ({ id }: { id: string }) => {
-  const response = await fetch(`${BACKEND_URL}/api/membership/all/${id}`, {
-    method: "GET",
-    credentials: "include",
-  });
+export const getAdminData = async ({
+  id,
+  userRole,
+}: {
+  id: string;
+  userRole: string;
+}) => {
+  const response = await fetch(
+    `${BACKEND_URL}/api/world/adminData/${id}?userRole=${encodeURIComponent(
+      userRole
+    )}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
 
   return response;
 };
@@ -129,6 +140,54 @@ export const joinWorld = async ({ joinCode }: { joinCode: string }) => {
     },
     credentials: "include",
     body: JSON.stringify({ code: joinCode }),
+  });
+
+  return response;
+};
+
+export const updateMemberRole = async ({
+  id,
+  role,
+  userId,
+  userRole,
+}: {
+  id: string;
+  role: string;
+  userId: string;
+  userRole: string;
+}) => {
+  const response = await fetch(`${BACKEND_URL}/api/membership/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ role, userId, userRole }),
+  });
+
+  return response;
+};
+
+export const updateWorldDetails = async ({
+  id,
+  name,
+  description,
+  code,
+  userRole,
+}: {
+  id: string;
+  name: string;
+  description: string;
+  code: string;
+  userRole: string;
+}) => {
+  const response = await fetch(`${BACKEND_URL}/api/world/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ name, description, code, userRole }),
   });
 
   return response;

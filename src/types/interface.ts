@@ -1,5 +1,30 @@
 import type { ReactNode } from "react";
 
+export interface IAdminData {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  joinCode: {
+    id: string;
+    code: string;
+    worldId: string;
+    createdAt: string;
+  };
+  bosses: IBoss[];
+  events: IEvent[];
+  notes: INote[];
+  memberships: {
+    id: string;
+    role: string;
+    userId: string;
+    worldId: string;
+    user: {
+      username: string;
+    };
+  }[];
+}
+
 export interface IAuthContext {
   isAuthenticated: boolean | null;
   signUp: ({
@@ -98,18 +123,7 @@ export interface IWorldCardProps {
   members: number;
 }
 
-export interface IWorldCode {
-  id: string;
-  code: string;
-  worldId: string;
-  createdAt: string;
-}
-
-export interface IWorldMembers {
-  id: string;
-  role: string;
-  userId: string;
-  worldId: string;
+export interface IMembership {
   user: {
     username: string;
   };

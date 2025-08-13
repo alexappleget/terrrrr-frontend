@@ -17,21 +17,9 @@ export const Navbar = ({ handleSignOut }: { handleSignOut: () => void }) => {
 
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center gap-4">
-        <CustomLink
-          href="/profile"
-          className="bg-[#c2ff9e] text-[#2e5a1f] border-2 border-[#2e5a1f] hover:bg-[#2e5a1f] hover:text-[#c2ff9e]"
-        >
-          Profile
-        </CustomLink>
-        <CustomLink
-          href="/settings"
-          className="bg-[#c2ff9e] text-[#2e5a1f] border-2 border-[#2e5a1f] hover:bg-[#2e5a1f] hover:text-[#c2ff9e]"
-        >
-          Settings
-        </CustomLink>
         <Button
           type="button"
-          className="border-2 border-[#2e5a1f] bg-[#2e5a1f] text-[#c2ff9e] hover:bg-[#c2ff9e] hover:border-[#2e5a1f] hover:text-[#1E3A2F] hover:cursor-pointer"
+          className="border-2 border-[#2e5a1f] bg-[#2e5a1f] text-[#c2ff9e] hover:bg-[#c2ff9e] hover:border-[#2e5a1f] hover:text-[#1E3A2F]"
           onClick={handleSignOut}
         >
           Sign Out

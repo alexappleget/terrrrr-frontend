@@ -32,7 +32,7 @@ export const CreateWorld = () => {
       <DialogTrigger asChild>
         <Button
           type="button"
-          className="bg-[#4CAF50] text-[#F0F8E8] border-2 border-[#2e5a1f] hover:bg-[#66BB66] hover:text-[#1E3A2F] shadow-md shadow-[#2e5a1f] px-4 py-2"
+          className="bg-[#4CAF50] text-[#F0F8E8] border-2 border-[#2e5a1f] hover:bg-[#66BB66] hover:text-[#1E3A2F] shadow-md shadow-[#2e5a1f]"
         >
           Create World
         </Button>

@@ -10,6 +10,7 @@ import { Bosses } from "./pages/bosses";
 import { Notes } from "./pages/notes";
 import { Events } from "./pages/events";
 import { Admin } from "./pages/admin";
+import { WorldAdminRoute } from "./routes/world-admin";
 
 function App() {
   const { isAuthenticated } = useAuthContext();
@@ -53,7 +54,14 @@ function App() {
         <Route path="bosses" element={<Bosses />} />
         <Route path="notes" element={<Notes />} />
         <Route path="events" element={<Events />} />
-        <Route path="admin" element={<Admin />} />
+        <Route
+          path="admin"
+          element={
+            <WorldAdminRoute>
+              <Admin />
+            </WorldAdminRoute>
+          }
+        />
       </Route>
     </Routes>
   );
