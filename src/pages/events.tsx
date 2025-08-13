@@ -63,7 +63,7 @@ export const Events = () => {
     <div className="grid gap-4 px-4 md:px-16 lg:px-32 xl:px-52">
       {loading ? (
         <div className="min-h-[400px] flex items-center justify-center">
-          <span>Loading boss data...</span>
+          <span>Loading events...</span>
         </div>
       ) : (
         <>

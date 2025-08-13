@@ -43,7 +43,7 @@ export const Dashboard = () => {
         {loading ? (
           <div className="flex-grow flex items-center justify-center gap-2 text-[#EAD7B7]">
             <Globe className="animate-bounce" />
-            <span>Gathering Your Worlds...</span>
+            <span>Gathering your worlds...</span>
           </div>
         ) : (
           <>

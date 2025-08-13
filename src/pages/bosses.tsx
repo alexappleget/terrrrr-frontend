@@ -29,7 +29,7 @@ export const Bosses = () => {
     <div className="flex-grow flex flex-col items-center px-4 md:px-16 lg:px-32 xl:px-52">
       {loading ? (
         <div className="min-h-[400px] flex items-center justify-center">
-          <span>Loading Boss Data...</span>
+          <span>Loading boss data...</span>
         </div>
       ) : (
         <>

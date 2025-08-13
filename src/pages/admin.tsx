@@ -173,7 +173,7 @@ export const Admin = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="worldName" className="mt-4">
+                  <Label htmlFor="joinCode" className="mt-4">
                     Join Code
                   </Label>
                   <Input
