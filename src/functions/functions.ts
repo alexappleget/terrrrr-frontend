@@ -1,7 +1,7 @@
 import { BACKEND_URL } from "@/lib/utils";
 
-export const getAllMemberships = async ({ id }: { id: string }) => {
-  const response = await fetch(`${BACKEND_URL}/api/membership/all/${id}`, {
+export const getAdminData = async ({ id }: { id: string }) => {
+  const response = await fetch(`${BACKEND_URL}/api/world/adminData/${id}`, {
     method: "GET",
     credentials: "include",
   });
