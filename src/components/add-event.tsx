@@ -52,6 +52,7 @@ export const AddEvent = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="text-xs"
+          maxLength={25}
         />
         <Label htmlFor="description" className="mt-2">
           Content
@@ -62,6 +63,7 @@ export const AddEvent = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className="text-xs"
+          maxLength={125}
         />
         <Label htmlFor="scheduledAt" className="mt-2">
           Date & Time

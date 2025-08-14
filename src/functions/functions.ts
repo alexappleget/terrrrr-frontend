@@ -69,10 +69,12 @@ export const createNote = async ({
   id,
   title,
   content,
+  tag,
 }: {
   id: string;
   title: string;
   content: string;
+  tag: string;
 }) => {
   const response = await fetch(`${BACKEND_URL}/api/note/${id}`, {
     method: "POST",
@@ -80,7 +82,26 @@ export const createNote = async ({
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify({ title, content }),
+    body: JSON.stringify({ title, content, tag }),
+  });
+
+  return response;
+};
+
+export const deleteNote = async ({
+  id,
+  userRole,
+}: {
+  id: string;
+  userRole: string;
+}) => {
+  const response = await fetch(`${BACKEND_URL}/api/note/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ userRole }),
   });
 
   return response;
