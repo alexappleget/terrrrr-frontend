@@ -45,9 +45,9 @@ export const Notes = () => {
         ...prev,
         [id]: "Error deleting note. Please try again later.",
       }));
+    } else {
+      fetchNotes();
     }
-
-    fetchNotes();
   };
 
   useEffect(() => {
