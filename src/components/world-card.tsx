@@ -49,10 +49,10 @@ export const WorldCard = ({
     <Link to={`/world/${id}/bosses`}>
       <Card className="bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 border-2 border-purple-600/50 hover:border-purple-400/80 hover:shadow-lg hover:shadow-purple-500/20">
         <CardHeader className="text-center pb-4">
-          <CardTitle className="mb-2 text-xl text-purple-100 drop-shadow-lg">
+          <CardTitle className="mb-2 text-xl text-purple-100 drop-shadow-lg h-7 overflow-hidden whitespace-nowrap text-ellipsis">
             {name}
           </CardTitle>
-          <CardDescription className="text-purple-300">
+          <CardDescription className="h-10 text-xs text-purple-300">
             {description}
           </CardDescription>
         </CardHeader>

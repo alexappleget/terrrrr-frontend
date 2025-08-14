@@ -70,12 +70,16 @@ export const CreateWorld = () => {
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              maxLength={40}
               className="border-2 border-[#4A2C19] bg-[#7B5E25] text-[#F0E6D2]
                 placeholder-[#CBB993]
                 focus:outline-none focus:ring-2 focus:ring-[#D6B77B]
                 rounded-sm
                 px-2 py-1"
             />
+            <span className="text-xs">
+              {40 - description.length} characters left
+            </span>
           </div>
         </div>
         <DialogFooter>

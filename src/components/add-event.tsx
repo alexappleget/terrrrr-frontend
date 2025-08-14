@@ -70,6 +70,7 @@ export const AddEvent = () => {
           id="scheduledAt"
           name="scheduledAt"
           type="datetime-local"
+          min={new Date().toISOString().slice(0, 16)}
           value={scheduledAt}
           onChange={(e) => setScheduledAt(e.target.value)}
           className="text-xs"

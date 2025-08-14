@@ -48,7 +48,7 @@ export const Notes = () => {
             <AddNote />
           </div>
           <div className="flex flex-col gap-4 mb-12">
-            {worldNotes.map((note) => (
+            {[...worldNotes].reverse().map((note) => (
               <Card
                 key={note.id}
                 className="border-2 bg-gradient-to-br from-[#472d67] via-[#3d2759] to-[#2b193d] text-purple-200 hover:shadow-lg hover:shadow-purple-600/70"
