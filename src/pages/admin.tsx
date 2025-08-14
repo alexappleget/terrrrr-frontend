@@ -190,47 +190,49 @@ export const Admin = () => {
                         >
                           {member.role}
                         </Badge>
-                        <Popover
-                          open={openPopoverId === member.id}
-                          onOpenChange={(isOpen) =>
-                            setOpenPopoverId(isOpen ? member.id : null)
-                          }
-                        >
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant="outline"
-                              role="combobox"
-                              aria-expanded={openPopoverId === member.id}
-                              className="text-xs"
-                            >
-                              Change...
-                              <ChevronsUpDown />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <Command>
-                              <CommandList>
-                                <CommandGroup>
-                                  {roles.map((role) => (
-                                    <CommandItem
-                                      key={role.value}
-                                      value={role.value}
-                                      onSelect={() =>
-                                        handleRoleChange({
-                                          id: member.worldId,
-                                          role: role.value,
-                                          userId: member.userId,
-                                        })
-                                      }
-                                    >
-                                      {role.label}
-                                    </CommandItem>
-                                  ))}
-                                </CommandGroup>
-                              </CommandList>
-                            </Command>
-                          </PopoverContent>
-                        </Popover>
+                        {userRole === "OWNER" && (
+                          <Popover
+                            open={openPopoverId === member.id}
+                            onOpenChange={(isOpen) =>
+                              setOpenPopoverId(isOpen ? member.id : null)
+                            }
+                          >
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={openPopoverId === member.id}
+                                className="text-xs"
+                              >
+                                Change...
+                                <ChevronsUpDown />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <Command>
+                                <CommandList>
+                                  <CommandGroup>
+                                    {roles.map((role) => (
+                                      <CommandItem
+                                        key={role.value}
+                                        value={role.value}
+                                        onSelect={() =>
+                                          handleRoleChange({
+                                            id: member.worldId,
+                                            role: role.value,
+                                            userId: member.userId,
+                                          })
+                                        }
+                                      >
+                                        {role.label}
+                                      </CommandItem>
+                                    ))}
+                                  </CommandGroup>
+                                </CommandList>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
+                        )}
                       </div>
                     </div>
                   ))}
