@@ -48,9 +48,17 @@ export const AddNote = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button type="button">Add Note</Button>
+        <Button
+          type="button"
+          className="text-xs bg-purple-700 text-purple-50 shadow-lg shadow-purple-600/50 border border-purple-600 hover:bg-purple-800"
+        >
+          Add Note
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+      <DialogContent
+        className="sm:max-w-[425px] text-purple-700 bg-purple-200"
+        aria-describedby={undefined}
+      >
         <DialogHeader>
           <DialogTitle className="mb-6">Create New Note</DialogTitle>
         </DialogHeader>
@@ -68,8 +76,8 @@ export const AddNote = () => {
               <ChevronsUpDown />
             </Button>
           </PopoverTrigger>
-          <PopoverContent>
-            <Command>
+          <PopoverContent className="bg-purple-100">
+            <Command className="bg-purple-100">
               <CommandList>
                 <CommandGroup>
                   {tags.map((tag) => (
@@ -82,6 +90,7 @@ export const AddNote = () => {
                         );
                         setOpen(false);
                       }}
+                      className="text-purple-700"
                     >
                       {tag.label}
                     </CommandItem>
@@ -97,7 +106,7 @@ export const AddNote = () => {
           name="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="text-xs"
+          className="text-xs border-2 border-purple-700 bg-purple-100 text-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-700"
           required
         />
         <Label htmlFor="content" className="mt-2">
@@ -108,11 +117,15 @@ export const AddNote = () => {
           name="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="text-xs max-h-96"
+          className="text-xs max-h-96 border-2 border-purple-700 bg-purple-100 text-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-700"
           required
         />
         <DialogFooter>
-          <Button type="button" onClick={handleCreateNote}>
+          <Button
+            type="button"
+            className="bg-purple-700 text-purple-50 shadow-lg shadow-purple-600/50 border border-purple-600 hover:bg-purple-800"
+            onClick={handleCreateNote}
+          >
             Create Note
           </Button>
           {error && <span className="text-xs text-red-400">{error}</span>}

@@ -131,6 +131,12 @@ export const Notes = () => {
                 </Card>
               ))}
           </div>
+          {worldNotes.length === 0 && (
+            <div className="rounded-md border p-6 text-center text-sm text-purple-700">
+              No notes have been added. Share strategies, reminders, or ideas to
+              help your group!
+            </div>
+          )}
         </>
       )}
     </div>

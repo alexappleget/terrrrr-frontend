@@ -37,11 +37,17 @@ export const AddEvent = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button type="button" className="text-xs">
+        <Button
+          type="button"
+          className="text-xs bg-purple-700 text-purple-50 shadow-lg shadow-purple-600/50 border border-purple-600 hover:bg-purple-800"
+        >
           Create Event
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+      <DialogContent
+        className="sm:max-w-[425px] text-purple-700 bg-purple-200"
+        aria-describedby={undefined}
+      >
         <DialogHeader>
           <DialogTitle className="mb-6">Create New Event</DialogTitle>
         </DialogHeader>
@@ -51,7 +57,7 @@ export const AddEvent = () => {
           name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="text-xs"
+          className="text-xs border-2 border-purple-700 bg-purple-100 text-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-700"
           maxLength={25}
         />
         <Label htmlFor="description" className="mt-2">
@@ -62,7 +68,7 @@ export const AddEvent = () => {
           name="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="text-xs"
+          className="text-xs border-2 border-purple-700 bg-purple-100 text-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-700"
           maxLength={125}
         />
         <Label htmlFor="scheduledAt" className="mt-2">
@@ -75,10 +81,14 @@ export const AddEvent = () => {
           min={new Date().toISOString().slice(0, 16)}
           value={scheduledAt}
           onChange={(e) => setScheduledAt(e.target.value)}
-          className="text-xs"
+          className="text-xs border-2 border-purple-700 bg-purple-100 text-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-700"
         />
         <DialogFooter>
-          <Button type="button" onClick={handleCreateEvent}>
+          <Button
+            type="button"
+            className="bg-purple-700 text-purple-50 shadow-lg shadow-purple-600/50 border border-purple-600 hover:bg-purple-800"
+            onClick={handleCreateEvent}
+          >
             Create Event
           </Button>
         </DialogFooter>

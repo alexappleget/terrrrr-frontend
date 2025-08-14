@@ -169,7 +169,7 @@ export const Events = () => {
               })}
           </div>
           {worldEvents.length === 0 && (
-            <div className="rounded-md border p-6 text-center text-sm text-muted-foreground">
+            <div className="rounded-md border p-6 text-center text-sm text-purple-700">
               No events yet. Create one to coordinate your next session.
             </div>
           )}
