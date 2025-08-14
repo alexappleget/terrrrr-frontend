@@ -20,7 +20,7 @@ export const Notes = () => {
   const userRole = world?.role ?? "";
   const [worldNotes, setWorldNotes] = useState<INote[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<{ [id: string]: string }>({});
 
   const fetchNotes = useCallback(async () => {
     if (!id) {
@@ -41,11 +41,29 @@ export const Notes = () => {
     const response = await deleteNote({ id, userRole });
 
     if (!response.ok) {
-      setError("Error deleting note. Please try again later");
+      setError((prev) => ({
+        ...prev,
+        [id]: "Error deleting note. Please try again later.",
+      }));
     }
 
     fetchNotes();
   };
+
+  useEffect(() => {
+    Object.keys(error).forEach((noteId) => {
+      if (error[noteId]) {
+        const timer = setTimeout(() => {
+          setError((prev) => {
+            const newErr = { ...prev };
+            delete newErr[noteId];
+            return newErr;
+          });
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
+    });
+  }, [error]);
 
   return (
     <div className="flex flex-col px-4 md:px-16 lg:px-32 xl:px-52">
@@ -104,8 +122,10 @@ export const Notes = () => {
                         </Button>
                       )}
                     </div>
-                    {error && (
-                      <span className="text-xs text-red-400">{error}</span>
+                    {error[note.id] && (
+                      <span className="text-xs text-red-400">
+                        {error[note.id]}
+                      </span>
                     )}
                   </CardContent>
                 </Card>
