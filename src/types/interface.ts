@@ -81,6 +81,7 @@ export interface INote {
   id: string;
   title: string;
   content: string;
+  tag: string;
   authorId: string;
   worldId: string;
   createdAt: string;

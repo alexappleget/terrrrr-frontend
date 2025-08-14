@@ -77,76 +77,96 @@ export const Events = () => {
             <AddEvent />
           </div>
           <div className="grid gap-4 lg:grid-cols-2 my-4">
-            {worldEvents.map((event) => {
-              const date = new Date(event.scheduledAt);
+            {[...worldEvents]
+              .sort(
+                (older, newer) =>
+                  new Date(older.scheduledAt).getTime() -
+                  new Date(newer.scheduledAt).getTime()
+              )
+              .map((event) => {
+                const date = new Date(event.scheduledAt);
 
-              const datePart = date.toLocaleDateString(undefined, {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              });
+                const datePart = date.toLocaleDateString(undefined, {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                });
 
-              const timePart = date.toLocaleTimeString(undefined, {
-                hour: "numeric",
-                minute: "2-digit",
-              });
+                const timePart = date.toLocaleTimeString(undefined, {
+                  hour: "numeric",
+                  minute: "2-digit",
+                });
 
-              const isAttending = event.RSVPs.some(
-                (rsvp) => rsvp.userId === user?.id
-              );
+                const isAttending = event.RSVPs.some(
+                  (rsvp) => rsvp.userId === user?.id
+                );
 
-              return (
-                <Card
-                  key={event.id}
-                  className="border-2 bg-gradient-to-br from-[#472d67] via-[#3d2759] to-[#2b193d] text-purple-200 hover:shadow-lg hover:shadow-purple-600/70"
-                >
-                  <CardHeader>
-                    <CardTitle className="text-lg">
-                      {event.name.toUpperCase()}
-                    </CardTitle>
-                    <div className="text-xs text-purple-400">
-                      {datePart}, {timePart}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="grid gap-2">
-                    <p>{event.description}</p>
-                    <div className="flex items-center gap-2 text-xs text-green-400">
-                      <Users className="h-4 w-4" />
-                      {event.RSVPs.length}
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex items-center justify-between">
-                    <div className="flex flex-wrap gap-2">
-                      {event.RSVPs.map((attendee) => (
-                        <Badge
-                          key={attendee.id}
-                          variant="secondary"
-                          className="bg-purple-700 text-purple-50 shadow-lg shadow-purple-600/50 border border-purple-600"
+                return (
+                  <Card
+                    key={event.id}
+                    className="bg-gradient-to-br from-[#472d67] via-[#3d2759] to-[#2b193d] text-purple-200 hover:shadow-lg hover:shadow-purple-600/70"
+                  >
+                    <CardHeader>
+                      <CardTitle
+                        className="text-lg break-words"
+                        style={{
+                          overflowWrap: "break-word",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {event.name.toUpperCase()}
+                      </CardTitle>
+                      <div className="text-xs text-purple-400">
+                        {datePart}, {timePart}
+                      </div>
+                    </CardHeader>
+                    <CardContent className="grid gap-2">
+                      <p
+                        className="text-xs break-words h-14 lg:h-20"
+                        style={{
+                          overflowWrap: "break-word",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {event.description}
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-green-400">
+                        <Users className="h-4 w-4" />
+                        {event.RSVPs.length}
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex items-center justify-between">
+                      <div className="flex flex-wrap gap-2">
+                        {event.RSVPs.map((attendee) => (
+                          <Badge
+                            key={attendee.id}
+                            variant="secondary"
+                            className="bg-purple-700 text-purple-50 shadow-lg shadow-purple-600/50 border border-purple-600"
+                          >
+                            {attendee.user.username}
+                          </Badge>
+                        ))}
+                      </div>
+                      {isAttending ? (
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          onClick={() => handleLeaveEvent({ id: event.id })}
                         >
-                          {attendee.user.username}
-                        </Badge>
-                      ))}
-                    </div>
-                    {isAttending ? (
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        onClick={() => handleLeaveEvent({ id: event.id })}
-                      >
-                        Leave
-                      </Button>
-                    ) : (
-                      <Button
-                        type="button"
-                        onClick={() => handleJoinEvent({ id: event.id })}
-                      >
-                        Join
-                      </Button>
-                    )}
-                  </CardFooter>
-                </Card>
-              );
-            })}
+                          Leave
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          onClick={() => handleJoinEvent({ id: event.id })}
+                        >
+                          Join
+                        </Button>
+                      )}
+                    </CardFooter>
+                  </Card>
+                );
+              })}
           </div>
           {worldEvents.length === 0 && (
             <div className="rounded-md border p-6 text-center text-sm text-muted-foreground">
