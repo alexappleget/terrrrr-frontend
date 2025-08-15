@@ -8,10 +8,6 @@ import { WorldDetailsCard } from "./worlddetailscard";
 
 export const Admin = () => {
   const { id } = useParams();
-  if (!id) {
-    throw new Error("No world ID found");
-  }
-
   const world = useOutletContext<IUserWorlds | undefined>();
   const userRole = world?.role ?? "";
   const [data, setData] = useState<IAdminData | null>(null);
@@ -48,6 +44,10 @@ export const Admin = () => {
         </div>
       </div>
     );
+  }
+
+  if (!id) {
+    throw new Error("No world ID found");
   }
 
   return (
