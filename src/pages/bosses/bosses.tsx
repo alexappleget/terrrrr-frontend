@@ -1,4 +1,4 @@
-import { getBosses, setBossKilledState } from "@/functions/functions";
+import { getBosses } from "@/functions/functions";
 import type { IBoss } from "@/types/interface";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -25,22 +25,6 @@ export const Bosses = () => {
     fetchBosses();
   }, [fetchBosses]);
 
-  const handleSetBossKilledState = async ({
-    id,
-    userRole,
-    killed,
-  }: {
-    id: string;
-    userRole: string;
-    killed: boolean;
-  }) => {
-    const response = await setBossKilledState({ id, userRole, killed });
-
-    if (response.ok) {
-      fetchBosses();
-    }
-  };
-
   return (
     <div className="flex-grow flex flex-col items-center px-4 md:px-16 lg:px-32 xl:px-52">
       {loading ? (
@@ -55,11 +39,7 @@ export const Bosses = () => {
 
           <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 my-12">
             {worldBosses.map((boss) => (
-              <BossCard
-                key={boss.id}
-                boss={boss}
-                handleSetBossKilledState={handleSetBossKilledState}
-              />
+              <BossCard key={boss.id} boss={boss} fetchBosses={fetchBosses} />
             ))}
           </div>
         </>

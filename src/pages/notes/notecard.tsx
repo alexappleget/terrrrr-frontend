@@ -7,24 +7,52 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/card";
-import type { INote } from "@/types/interface";
+import { deleteNote } from "@/functions/functions";
+import type { INote, IUserWorlds } from "@/types/interface";
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 export const NoteCard = ({
-  error,
-  handleDeleteNote,
   note,
-  userRole,
+  fetchNotes,
 }: {
-  error: { [id: string]: string };
-  handleDeleteNote: ({ id }: { id: string }) => void;
   note: INote;
-  userRole: string;
+  fetchNotes: () => void;
 }) => {
+  const world = useOutletContext<IUserWorlds | undefined>();
+  const userRole = world?.role ?? "";
+  const [error, setError] = useState<{ [id: string]: string }>({});
+
+  const handleDeleteNote = async ({ id }: { id: string }) => {
+    const response = await deleteNote({ id, userRole });
+
+    if (!response.ok) {
+      setError((prev) => ({
+        ...prev,
+        [id]: "Error deleting note. Please try again later.",
+      }));
+    } else {
+      fetchNotes();
+    }
+  };
+
+  useEffect(() => {
+    Object.keys(error).forEach((noteId) => {
+      if (error[noteId]) {
+        const timer = setTimeout(() => {
+          setError((prev) => {
+            const newErr = { ...prev };
+            delete newErr[noteId];
+            return newErr;
+          });
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
+    });
+  }, [error]);
+
   return (
-    <Card
-      key={note.id}
-      className="border-2 bg-gradient-to-br from-[#472d67] via-[#3d2759] to-[#2b193d] text-purple-200 hover:shadow-lg hover:shadow-purple-600/70"
-    >
+    <Card className="border-2 bg-gradient-to-br from-[#472d67] via-[#3d2759] to-[#2b193d] text-purple-200 hover:shadow-lg hover:shadow-purple-600/70">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-purple-100 drop-shadow-md">
@@ -43,7 +71,7 @@ export const NoteCard = ({
           <p className="text-sm" style={{ whiteSpace: "pre-line" }}>
             {note.content}
           </p>
-          {["OWNER", "ADMIN", "SUB_ADMIN"].includes(userRole.toUpperCase()) && (
+          {["OWNER", "ADMIN", "SUB_ADMIN"].includes(userRole) && (
             <Button
               type="button"
               variant="destructive"

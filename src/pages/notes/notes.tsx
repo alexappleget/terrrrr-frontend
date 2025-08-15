@@ -1,18 +1,15 @@
 import { AddNote } from "@/components/add-note";
-import { deleteNote, getNotes } from "@/functions/functions";
-import type { INote, IUserWorlds } from "@/types/interface";
+import { getNotes } from "@/functions/functions";
+import type { INote } from "@/types/interface";
 import { Notebook } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { NoteCard } from "./notecard";
 
 export const Notes = () => {
   const { id } = useParams();
-  const world = useOutletContext<IUserWorlds | undefined>();
-  const userRole = world?.role ?? "";
   const [worldNotes, setWorldNotes] = useState<INote[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<{ [id: string]: string }>({});
 
   const fetchNotes = useCallback(async () => {
     if (!id) {
@@ -28,34 +25,6 @@ export const Notes = () => {
   useEffect(() => {
     fetchNotes();
   }, [fetchNotes]);
-
-  const handleDeleteNote = async ({ id }: { id: string }) => {
-    const response = await deleteNote({ id, userRole });
-
-    if (!response.ok) {
-      setError((prev) => ({
-        ...prev,
-        [id]: "Error deleting note. Please try again later.",
-      }));
-    } else {
-      fetchNotes();
-    }
-  };
-
-  useEffect(() => {
-    Object.keys(error).forEach((noteId) => {
-      if (error[noteId]) {
-        const timer = setTimeout(() => {
-          setError((prev) => {
-            const newErr = { ...prev };
-            delete newErr[noteId];
-            return newErr;
-          });
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
-    });
-  }, [error]);
 
   return (
     <div className="flex flex-col px-4 md:px-16 lg:px-32 xl:px-52">
@@ -80,13 +49,7 @@ export const Notes = () => {
                   new Date(older.createdAt).getTime()
               )
               .map((note) => (
-                <NoteCard
-                  key={note.id}
-                  note={note}
-                  error={error}
-                  handleDeleteNote={handleDeleteNote}
-                  userRole={userRole}
-                />
+                <NoteCard key={note.id} note={note} fetchNotes={fetchNotes} />
               ))}
           </div>
           {worldNotes.length === 0 && (

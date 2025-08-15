@@ -7,15 +7,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/card";
+import { setBossKilledState } from "@/functions/functions";
 import type { IBoss, IUserWorlds } from "@/types/interface";
 import { useOutletContext } from "react-router-dom";
 
 export const BossCard = ({
   boss,
-  handleSetBossKilledState,
+  fetchBosses,
 }: {
   boss: IBoss;
-  handleSetBossKilledState: ({
+  fetchBosses: () => void;
+}) => {
+  const world = useOutletContext<IUserWorlds | undefined>();
+  const userRole = world?.role ?? "";
+
+  const handleSetBossKilledState = async ({
     id,
     userRole,
     killed,
@@ -23,10 +29,13 @@ export const BossCard = ({
     id: string;
     userRole: string;
     killed: boolean;
-  }) => Promise<void>;
-}) => {
-  const world = useOutletContext<IUserWorlds | undefined>();
-  const userRole = world?.role ?? "";
+  }) => {
+    const response = await setBossKilledState({ id, userRole, killed });
+
+    if (response.ok) {
+      fetchBosses();
+    }
+  };
 
   return (
     <Card
@@ -62,7 +71,7 @@ export const BossCard = ({
           </div>
         </div>
       </CardContent>
-      {["OWNER", "ADMIN", "SUB_ADMIN"].includes(userRole.toUpperCase()) && (
+      {["OWNER", "ADMIN", "SUB_ADMIN"].includes(userRole) && (
         <CardFooter className="flex items-center md:justify-center">
           {boss.worldProgress.killed ? (
             <Button

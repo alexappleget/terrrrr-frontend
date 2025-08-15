@@ -86,7 +86,7 @@ export const WorldDetailsCard = ({
               value={worldDetails.worldName}
               onChange={handleInputChange}
               className="bg-purple-900/40 border-2 border-purple-700 text-purple-100 focus:border-yellow-400 focus:ring-yellow-400"
-              readOnly={userRole.toUpperCase() !== "OWNER"}
+              readOnly={userRole !== "OWNER"}
             />
           </div>
           <div className="space-y-2">
@@ -100,7 +100,7 @@ export const WorldDetailsCard = ({
               value={worldDetails.joinCode}
               onChange={handleInputChange}
               className="bg-purple-900/40 border-2 border-purple-700 text-purple-100 focus:border-yellow-400 focus:ring-yellow-400"
-              readOnly={userRole.toUpperCase() !== "OWNER"}
+              readOnly={userRole !== "OWNER"}
             />
           </div>
         </div>
@@ -112,12 +112,12 @@ export const WorldDetailsCard = ({
             value={worldDetails.worldDescription}
             onChange={handleInputChange}
             className="bg-purple-900/40 border-2 border-purple-700 text-purple-100 focus:border-yellow-400 focus:ring-yellow-400"
-            readOnly={userRole.toUpperCase() !== "OWNER"}
+            readOnly={userRole !== "OWNER"}
           />
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-start">
-        {userRole.toUpperCase() === "OWNER" && (
+        {userRole === "OWNER" && (
           <Button
             type="button"
             className="bg-yellow-700 text-yellow-100 border-yellow-400 shadow hover:bg-yellow-600 hover:text-yellow-50"

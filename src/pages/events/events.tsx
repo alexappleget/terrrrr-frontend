@@ -1,6 +1,5 @@
 import { AddEvent } from "@/components/add-event";
 import { getEvents } from "@/functions/functions";
-import { BACKEND_URL } from "@/lib/utils";
 import type { IEvent } from "@/types/interface";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -25,28 +24,6 @@ export const Events = () => {
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]);
-
-  const handleJoinEvent = async ({ id }: { id: string }) => {
-    const response = await fetch(`${BACKEND_URL}/api/event/join/${id}`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    if (response.ok) {
-      fetchEvents();
-    }
-  };
-
-  const handleLeaveEvent = async ({ id }: { id: string }) => {
-    const response = await fetch(`${BACKEND_URL}/api/event/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-
-    if (response.ok) {
-      fetchEvents();
-    }
-  };
 
   return (
     <div className="grid gap-4 px-4 md:px-16 lg:px-32 xl:px-52">
@@ -76,8 +53,7 @@ export const Events = () => {
                 <EventCard
                   key={event.id}
                   event={event}
-                  handleJoinEvent={handleJoinEvent}
-                  handleLeaveEvent={handleLeaveEvent}
+                  fetchEvents={fetchEvents}
                 />
               ))}
           </div>

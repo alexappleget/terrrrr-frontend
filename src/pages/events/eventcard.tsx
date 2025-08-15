@@ -8,19 +8,40 @@ import {
   CardTitle,
 } from "@/components/card";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { BACKEND_URL } from "@/lib/utils";
 import type { IEvent } from "@/types/interface";
 import { Users } from "lucide-react";
 
 export const EventCard = ({
   event,
-  handleJoinEvent,
-  handleLeaveEvent,
+  fetchEvents,
 }: {
   event: IEvent;
-  handleJoinEvent: ({ id }: { id: string }) => void;
-  handleLeaveEvent: ({ id }: { id: string }) => void;
+  fetchEvents: () => void;
 }) => {
   const { user } = useAuthContext();
+
+  const handleJoinEvent = async ({ id }: { id: string }) => {
+    const response = await fetch(`${BACKEND_URL}/api/event/join/${id}`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      fetchEvents();
+    }
+  };
+
+  const handleLeaveEvent = async ({ id }: { id: string }) => {
+    const response = await fetch(`${BACKEND_URL}/api/event/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      fetchEvents();
+    }
+  };
 
   const date = new Date(event.scheduledAt);
 
