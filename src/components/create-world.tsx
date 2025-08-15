@@ -54,11 +54,7 @@ export const CreateWorld = () => {
               name="worldName"
               value={worldName}
               onChange={(e) => setWorldName(e.target.value)}
-              className="border-2 border-[#4A2C19] bg-[#7B5E25] text-[#F0E6D2]
-                placeholder-[#CBB993]
-                focus:outline-none focus:ring-2 focus:ring-[#D6B77B]
-                rounded-sm
-                px-2 py-1"
+              className="border-2 border-[#4A2C19] bg-[#7B5E25] text-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#D6B77B]"
             />
           </div>
           <div className="grid gap-3">
@@ -71,11 +67,7 @@ export const CreateWorld = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               maxLength={40}
-              className="border-2 border-[#4A2C19] bg-[#7B5E25] text-[#F0E6D2]
-                placeholder-[#CBB993]
-                focus:outline-none focus:ring-2 focus:ring-[#D6B77B]
-                rounded-sm
-                px-2 py-1"
+              className="border-2 border-[#4A2C19] bg-[#7B5E25] text-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#D6B77B]"
             />
             <span className="text-xs">
               {40 - description.length} characters left

@@ -213,3 +213,24 @@ export const updateWorldDetails = async ({
 
   return response;
 };
+
+export const setBossKilledState = async ({
+  id,
+  userRole,
+  killed,
+}: {
+  id: string;
+  userRole: string;
+  killed: boolean;
+}) => {
+  const response = await fetch(`${BACKEND_URL}/api/boss/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ userRole, killed }),
+  });
+
+  return response;
+};
