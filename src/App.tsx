@@ -6,10 +6,10 @@ import { PrivateRoute } from "./routes/private-route";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { PublicRoute } from "./routes/public-route";
 import { WorldPage } from "./pages/world-page";
-import { Bosses } from "./pages/bosses";
-import { Notes } from "./pages/notes";
-import { Events } from "./pages/events";
-import { Admin } from "./pages/admin";
+import { Bosses } from "./pages/bosses/bosses";
+import { Notes } from "./pages/notes/notes";
+import { Events } from "./pages/events/events";
+import { Admin } from "./pages/admin/admin";
 import { WorldAdminRoute } from "./routes/world-admin";
 
 function App() {
