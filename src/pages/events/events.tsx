@@ -4,9 +4,11 @@ import type { IEvent } from "@/types/interface";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { EventCard } from "./eventcard";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Events = () => {
   const { id } = useParams();
+  const { isAuthenticated } = useAuthContext();
   const [worldEvents, setWorldEvents] = useState<IEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -22,8 +24,10 @@ export const Events = () => {
   }, [id]);
 
   useEffect(() => {
-    fetchEvents();
-  }, [fetchEvents]);
+    if (isAuthenticated) {
+      fetchEvents();
+    }
+  }, [fetchEvents, isAuthenticated]);
 
   return (
     <div className="grid gap-4 px-4 md:px-16 lg:px-32 xl:px-52">
