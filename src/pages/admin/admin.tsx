@@ -5,9 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 import { MemberManagementCard } from "./membermanagementcard";
 import { WorldDetailsCard } from "./worlddetailscard";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Admin = () => {
   const { id } = useParams();
+  const { isAuthenticated } = useAuthContext();
   const world = useOutletContext<IUserWorlds | undefined>();
   const userRole = world?.role ?? "";
   const [data, setData] = useState<IAdminData | null>(null);
@@ -32,8 +34,10 @@ export const Admin = () => {
   }, [id, userRole]);
 
   useEffect(() => {
-    fetchAdminData();
-  }, [fetchAdminData]);
+    if (isAuthenticated) {
+      fetchAdminData();
+    }
+  }, [fetchAdminData, isAuthenticated]);
 
   if (!data) {
     return (

@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
-  const { signOut } = useAuthContext();
+  const { isAuthenticated, signOut } = useAuthContext();
   const navigate = useNavigate();
   const [worlds, setWorlds] = useState<IUserWorlds[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,8 +33,10 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchUserWorlds();
-  }, []);
+    if (isAuthenticated) {
+      fetchUserWorlds();
+    }
+  }, [isAuthenticated]);
 
   return (
     <section className="flex flex-col min-h-screen">

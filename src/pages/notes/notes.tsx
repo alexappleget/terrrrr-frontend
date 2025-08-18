@@ -5,9 +5,11 @@ import { Notebook } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NoteCard } from "./notecard";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Notes = () => {
   const { id } = useParams();
+  const { isAuthenticated } = useAuthContext();
   const [worldNotes, setWorldNotes] = useState<INote[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -23,8 +25,10 @@ export const Notes = () => {
   }, [id]);
 
   useEffect(() => {
-    fetchNotes();
-  }, [fetchNotes]);
+    if (isAuthenticated) {
+      fetchNotes();
+    }
+  }, [fetchNotes, isAuthenticated]);
 
   return (
     <div className="flex flex-col px-4 md:px-16 lg:px-32 xl:px-52">

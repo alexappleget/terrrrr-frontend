@@ -18,6 +18,26 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
       if (data.authenticated) {
         setIsAuthenticated(true);
+      } else if (data.error === "Invalid token") {
+        const refreshResponse = await fetch(`${BACKEND_URL}/api/auth/refresh`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        const refreshData = await refreshResponse.json();
+
+        if (refreshData.success) {
+          const response = await fetch(`${BACKEND_URL}/api/auth/session`, {
+            method: "GET",
+            credentials: "include",
+          });
+
+          const data = await response.json();
+
+          setIsAuthenticated(data.authenticated);
+        } else {
+          setIsAuthenticated(false);
+        }
       } else {
         setIsAuthenticated(false);
       }

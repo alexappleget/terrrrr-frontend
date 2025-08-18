@@ -3,9 +3,11 @@ import type { IBoss } from "@/types/interface";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BossCard } from "./bosscard";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Bosses = () => {
   const { id } = useParams();
+  const { isAuthenticated } = useAuthContext();
   const [worldBosses, setWorldBosses] = useState<IBoss[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -22,8 +24,10 @@ export const Bosses = () => {
   }, [id]);
 
   useEffect(() => {
-    fetchBosses();
-  }, [fetchBosses]);
+    if (isAuthenticated) {
+      fetchBosses();
+    }
+  }, [fetchBosses, isAuthenticated]);
 
   return (
     <div className="flex-grow flex flex-col items-center px-4 md:px-16 lg:px-32 xl:px-52">
